@@ -12,9 +12,27 @@ class PlasticCheckinEnvironment(private val project: Project) : CheckinEnvironme
     private val runner = project.getService(PlasticCommandRunner::class.java)
 
     override fun commit(changes: List<com.intellij.openapi.vcs.changes.Change>, commitMessage: String, parameters: CommitContext?, feedback: Runnable?): List<VcsException> {
-        runner?.run(PlasticCommand.COMMIT, "-c=$commitMessage")
-        feedback?.run()
-        return emptyList()
+        val exceptions = mutableListOf<VcsException>()
+        val changePaths = changes.mapNotNull { change ->
+            change.afterRevision?.file?.path ?: change.beforeRevision?.file?.path
+        }
+
+        val arguments = mutableListOf("-c=$commitMessage")
+        arguments.addAll(changePaths)
+
+        val output = runner?.run(PlasticCommand.COMMIT, *arguments.toTypedArray())
+
+        if (output == null) {
+            exceptions.add(VcsException("Failed to execute Plastic SCM commit command."))
+        } else if (output.exitCode != 0) {
+            exceptions.add(VcsException(output.stderr.ifBlank { output.stdout }.ifBlank { "Plastic SCM commit failed with exit code ${output.exitCode}" }))
+        }
+
+        if (exceptions.isEmpty()) {
+            feedback?.run()
+        }
+
+        return exceptions
     }
 
     override fun scheduleMissingFileForDeletion(files: MutableList<com.intellij.openapi.vfs.VirtualFile>): MutableList<VcsException> = mutableListOf()
