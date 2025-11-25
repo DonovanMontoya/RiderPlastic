@@ -4,12 +4,35 @@
     <name>RiderPlastic</name>
     <vendor>donovanmontoya</vendor>
 
-    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.rider</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.donovanmontoya.riderplastic.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="com.github.donovanmontoya.riderplastic.startup.MyProjectActivity" />
+        <vcs implementation="com.github.donovanmontoya.riderplastic.vcs.PlasticVcs" name="Plastic SCM"/>
+        <notificationGroup id="Plastic SCM" displayType="BALLOON" isLogByDefault="true"/>
     </extensions>
+
+    <actions>
+        <action id="Plastic.Checkout" class="com.github.donovanmontoya.riderplastic.actions.CheckoutAction" text="Plastic SCM Checkout" description="Checkout using Plastic SCM">
+            <add-to-group group-id="ChangesViewToolbar" anchor="last" />
+            <add-to-group group-id="ChangesViewPopupMenu" anchor="last" />
+        </action>
+        <action id="Plastic.Commit" class="com.github.donovanmontoya.riderplastic.actions.CommitAction" text="Plastic SCM Commit" description="Commit changes using Plastic SCM">
+            <add-to-group group-id="ChangesViewToolbar" anchor="last" />
+            <add-to-group group-id="ChangesViewPopupMenu" anchor="last" />
+        </action>
+        <action id="Plastic.SwitchBranch" class="com.github.donovanmontoya.riderplastic.actions.SwitchBranchAction" text="Plastic SCM Switch Branch" description="Switch Plastic SCM branch">
+            <add-to-group group-id="ChangesViewToolbar" anchor="last" />
+            <add-to-group group-id="ChangesViewPopupMenu" anchor="last" />
+        </action>
+        <action id="Plastic.Merge" class="com.github.donovanmontoya.riderplastic.actions.MergeAction" text="Plastic SCM Merge" description="Merge branches with Plastic SCM">
+            <add-to-group group-id="ChangesViewToolbar" anchor="last" />
+            <add-to-group group-id="ChangesViewPopupMenu" anchor="last" />
+        </action>
+        <action id="Plastic.Diff" class="com.github.donovanmontoya.riderplastic.actions.DiffAction" text="Plastic SCM Diff" description="Show Plastic SCM diff">
+            <add-to-group group-id="ChangesViewToolbar" anchor="last" />
+            <add-to-group group-id="ChangesViewPopupMenu" anchor="last" />
+        </action>
+    </actions>
 </idea-plugin>
