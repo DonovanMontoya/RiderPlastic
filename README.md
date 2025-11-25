@@ -1,28 +1,21 @@
 # RiderPlastic
 
 ![Build](https://github.com/DonovanMontoya/RiderPlastic/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
-
-## Template ToDo list
-- [x] Create a new [IntelliJ Platform Plugin Template][template] project.
-- [ ] Get familiar with the [template documentation][template].
-- [ ] Adjust the [pluginGroup](./gradle.properties) and [pluginName](./gradle.properties), as well as the [id](./src/main/resources/META-INF/plugin.xml) and [sources package](./src/main/kotlin).
-- [ ] Adjust the plugin description in `README` (see [Tips][docs:plugin-description])
-- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html?from=IJPluginTemplate).
-- [ ] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate) for the first time.
-- [ ] Set the `MARKETPLACE_ID` in the above README badges. You can obtain it once the plugin is published to JetBrains Marketplace.
-- [ ] Set the [Plugin Signing](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html?from=IJPluginTemplate) related [secrets](https://github.com/JetBrains/intellij-platform-plugin-template#environment-variables).
-- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html?from=IJPluginTemplate).
-- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
-- [ ] Configure the [CODECOV_TOKEN](https://docs.codecov.com/docs/quick-start) secret for automated test coverage reports on PRs
+[![Version](https://img.shields.io/jetbrains/plugin/v/com.github.donovanmontoya.riderplastic.svg)](https://plugins.jetbrains.com/plugin/com.github.donovanmontoya.riderplastic)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/com.github.donovanmontoya.riderplastic.svg)](https://plugins.jetbrains.com/plugin/com.github.donovanmontoya.riderplastic)
 
 <!-- Plugin description -->
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
+RiderPlastic brings Plastic SCM workflows directly into JetBrains Rider. The plugin aims to streamline everyday source control actions including:
 
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
+- Cloning or connecting to Plastic SCM repositories
+- Viewing workspace status and pending changes
+- Creating, amending, and submitting commits
+- Managing branches and switches between them
+- Inspecting diffs, resolving merge conflicts, and launching merge tools
+- Reviewing incoming and outgoing changesets
 
-To keep everything working, do not remove `<!-- ... -->` sections. 
+Installation is available via the JetBrains Marketplace or manual package download. Ensure the Plastic SCM command-line client is installed and available on your PATH, and authenticate with your Plastic SCM credentials or a configured authentication provider before using the plugin.
+
 <!-- Plugin description end -->
 
 ## Installation
@@ -34,16 +27,15 @@ To keep everything working, do not remove `<!-- ... -->` sections.
 
 - Using JetBrains Marketplace:
 
-  Go to [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID) and install it by clicking the <kbd>Install to ...</kbd> button in case your IDE is running.
+  Go to [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/com.github.donovanmontoya.riderplastic) and install it by clicking the <kbd>Install to ...</kbd> button in case your IDE is running.
 
-  You can also download the [latest release](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID/versions) from JetBrains Marketplace and install it manually using
+  You can also download the [latest release](https://plugins.jetbrains.com/plugin/com.github.donovanmontoya.riderplastic/versions) from JetBrains Marketplace and install it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
 - Manually:
 
   Download the [latest release](https://github.com/DonovanMontoya/RiderPlastic/releases/latest) and install it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
-
 
 ---
 Plugin based on the [IntelliJ Platform Plugin Template][template].
