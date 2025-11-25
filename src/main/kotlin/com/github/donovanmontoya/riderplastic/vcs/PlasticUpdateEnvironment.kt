@@ -1,44 +1,55 @@
 package com.github.donovanmontoya.riderplastic.vcs
 
+import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.Ref
 import com.intellij.openapi.vcs.FilePath
-import com.intellij.openapi.vcs.UpdateEnvironment
 import com.intellij.openapi.vcs.VcsException
-import com.intellij.openapi.vcs.update.FileGroup
+import com.intellij.openapi.vcs.update.SequentialUpdatesContext
+import com.intellij.openapi.vcs.update.UpdateEnvironment
+import com.intellij.openapi.vcs.update.UpdateSession
 import com.intellij.openapi.vcs.update.UpdatedFiles
 
 class PlasticUpdateEnvironment(private val project: Project) : UpdateEnvironment {
 
     private val runner = project.getService(PlasticCommandRunner::class.java)
 
-    override fun updateDirectories(contentRoots: MutableCollection<FilePath>, updatedFiles: UpdatedFiles, progressIndicator: ProgressIndicator, force: MutableList<VcsException>, modifiableFiles: MutableList<FilePath>): com.intellij.openapi.vcs.update.UpdateSession {
+    override fun fillGroups(updatedFiles: UpdatedFiles) {
+        // Groups will be filled as files are updated
+    }
+
+    override fun updateDirectories(
+        contentRoots: Array<out FilePath>,
+        updatedFiles: UpdatedFiles,
+        progressIndicator: ProgressIndicator,
+        context: Ref<SequentialUpdatesContext>
+    ): UpdateSession {
+        val exceptions = mutableListOf<VcsException>()
         val output = runner?.run(PlasticCommand.CHECKOUT)
+
         when {
-            output == null -> force.add(VcsException("Failed to execute Plastic SCM checkout command."))
-            output.isCancelled -> force.add(VcsException("Plastic SCM checkout was cancelled."))
-            output.isTimeout -> force.add(VcsException("Plastic SCM checkout timed out."))
-            output.exitCode != 0 -> force.add(
+            output == null -> exceptions.add(VcsException("Failed to execute Plastic SCM checkout command."))
+            output.isCancelled -> exceptions.add(VcsException("Plastic SCM checkout was cancelled."))
+            output.isTimeout -> exceptions.add(VcsException("Plastic SCM checkout timed out."))
+            output.exitCode != 0 -> exceptions.add(
                 VcsException(
                     output.stderr.ifBlank { output.stdout }
                         .ifBlank { "Plastic SCM checkout failed with exit code ${output.exitCode}" }
                 )
             )
         }
-        return object : com.intellij.openapi.vcs.update.UpdateSession {
-            override fun getExceptions(): MutableCollection<VcsException> = force
-            override fun getStatus(): com.intellij.openapi.vcs.update.UpdateSession.SessionStatus = when {
-                output?.isCancelled == true -> com.intellij.openapi.vcs.update.UpdateSession.SessionStatus.CANCEL
-                force.isEmpty() -> com.intellij.openapi.vcs.update.UpdateSession.SessionStatus.SUCCESS
-                else -> com.intellij.openapi.vcs.update.UpdateSession.SessionStatus.ERROR
-            }
-            override fun cancel(): Boolean = false
+
+        return object : UpdateSession {
+            override fun getExceptions(): MutableList<VcsException> = exceptions
+
+            override fun isCanceled(): Boolean = output?.isCancelled == true
+
+            override fun onRefreshFilesCompleted() {}
         }
     }
 
-    override fun fillGroups(updatedFiles: UpdatedFiles) {
-        updatedFiles.registerGroup(FileGroup.COMPILED)
-    }
+    override fun validateOptions(contentRoots: MutableCollection<FilePath>): Boolean = true
 
-    override fun isEmptyFileSet(content: MutableCollection<FilePath>): Boolean = content.isEmpty()
+    override fun createConfigurable(contentRoots: MutableCollection<FilePath>): Configurable? = null
 }

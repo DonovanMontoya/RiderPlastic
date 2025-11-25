@@ -10,10 +10,6 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <vcs implementation="com.github.donovanmontoya.riderplastic.vcs.PlasticVcs" name="Plastic SCM"/>
-        <checkinEnvironment implementation="com.github.donovanmontoya.riderplastic.vcs.PlasticCheckinEnvironment"/>
-        <updateEnvironment implementation="com.github.donovanmontoya.riderplastic.vcs.PlasticUpdateEnvironment"/>
-        <diffProvider implementation="com.github.donovanmontoya.riderplastic.vcs.PlasticDiffProvider"/>
-        <fileStatusProvider implementation="com.github.donovanmontoya.riderplastic.vcs.PlasticFileStatusProvider"/>
         <notificationGroup id="Plastic SCM" displayType="BALLOON" isLogByDefault="true"/>
     </extensions>
 

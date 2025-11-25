@@ -2,12 +2,11 @@ package com.github.donovanmontoya.riderplastic.vcs
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.FileStatus
-import com.intellij.openapi.vcs.FileStatusProvider
 import com.intellij.openapi.vfs.VirtualFile
 
-class PlasticFileStatusProvider(private val project: Project) : FileStatusProvider() {
+class PlasticFileStatusProvider(private val project: Project) {
 
-    override fun getFileStatus(virtualFile: VirtualFile): FileStatus {
+    fun getFileStatus(virtualFile: VirtualFile): FileStatus {
         val runner = project.getService(PlasticCommandRunner::class.java) ?: return FileStatus.UNKNOWN
         val output = runner.run(PlasticCommand.STATUS, "--short", virtualFile.path) ?: return FileStatus.UNKNOWN
 
